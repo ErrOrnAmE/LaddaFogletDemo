@@ -28,13 +28,21 @@
         <script type="text/javascript" src="/main.js"></script>
     </head>
     <body>
+        <nav class="navbar">
+            <h1 class="text-center">
+                Ladda Foglet Demo
+                <a href="https://github.com/ErrOrnAmE/LaddaFogletDemo" class="float-right" target="_blank">
+                    <img src="/logo-github.png" title="Find us on github">
+                </a>
+            </h1>
+        </nav>
+        <br/>
         <div class="container-fluid">
-            <nav class="navbar">
-                <h1 class="text-center">Ladda Foglet Demo</h1>
-            </nav>
             <div class="card">
+                <div class="card-header">
+                    <h3>Timeline</h3>
+                </div>
                 <div class="card-block">
-                    <h4 class="card-title">Timeline</h4>
                     <div id="timeline"></div>
                 </div>
                 <div class="card-block">
@@ -60,14 +68,25 @@
                                             <span id="improvement_ratio">--</span>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Neighbours queries executed:</th>
+                                        <td class="text-right">
+                                            <span id="neighbours_queries_executed">0</span>
+                                        </td>
+                                    </tr>
                                 </table>
                             </p>
                         </div>
                         <div class="col-8">
                             <div id="item" class="card" style="display:none">
-                                <div class="card-block">
-                                    <h4>Query</h4>
-                                    <table>
+                                <div class="card-header" data-toggle="collapse" href="#itemTable" aria-expanded="true" style="cursor: pointer;">
+                                    <h4>Query <span class="float-right">&#9661;</span></h4>
+                                </div>
+                                <div class="card-block collapse" id="itemTable">
+                                    <table class="table">
                                         <tr>
                                             <th>Query id:</th>
                                             <td class="qId"></td>
@@ -75,6 +94,14 @@
                                         <tr>
                                             <th>Client id:</th>
                                             <td class="id"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Started at:</th>
+                                            <td class="started_at"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Ended at:</th>
+                                            <td class="ended_at"></td>
                                         </tr>
                                         <tr>
                                             <th>Query:</th>
@@ -90,8 +117,49 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-block">
-                    <a id="send_queries" class="btn btn-success float-right disabled" onclick="sendQueries()">Send 10 queries</a>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Queries</h3>
+                        </div>
+                        <div class="card-block">
+                            <textarea id="queries" class="form-control" style="min-height: 300px;">[
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } LIMIT 5",
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 5 LIMIT 5",
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 10 LIMIT 5",
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 15 LIMIT 5",
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 20 LIMIT 5",
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 25 LIMIT 5",
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 30 LIMIT 5",
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 35 LIMIT 5",
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 40 LIMIT 5",
+   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 45 LIMIT 5"
+]</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Start</h3>
+                        </div>
+                        <div class="card-block">
+                            <div class="form-group">
+                                <label for="endpoint">Endpoint</label>
+                                <input type="text" class="form-control" id="endpoint" value="https://query.wikidata.org/bigdata/ldf">
+                            </div>
+                            <div class="form-group">
+                                <label for="delegation_number">Delegation number</label>
+                                <input type="number" class="form-control" id="delegation_number" value="2">
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            <a id="send_queries" class="btn btn-success float-right disabled" onclick="sendQueries()">Send 10 queries</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

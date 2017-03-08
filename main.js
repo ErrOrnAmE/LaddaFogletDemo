@@ -6,29 +6,18 @@ const LaddaProtocol = require("foglet-ndp").LaddaProtocol;
 let spray;
 let foglet;
 let timeline;
-let timelineGroups;
-let timelineItems;
 
-let endpoint = "https://query.wikidata.org/bigdata/ldf";
-let queries = [
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } LIMIT 5",
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 5 LIMIT 5",
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 10 LIMIT 5",
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 15 LIMIT 5",
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 20 LIMIT 5",
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 25 LIMIT 5",
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 30 LIMIT 5",
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 35 LIMIT 5",
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 40 LIMIT 5",
-   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 45 LIMIT 5"
-];
+let endpoint;
+let queries;
 let executedQueries;
-let delegationNumber = 2;
+let delegationNumber;
 
 let globalStartTime;
 let globalExecutionTime;
 let cumulatedExecutionTime;
 let improvementRatio;
+
+let neighboursQueriesExecuted;
 
 // Connect to ICE server
 $(document).ready(function() {
@@ -62,7 +51,7 @@ $(document).ready(function() {
             });
 
             createFoglet();
-            createTimeline();
+            //createTimeline();
         }
     });
 
@@ -100,29 +89,36 @@ function createFoglet() {
     foglet.connection().then(function(s) {
         onFogletConnected();
     });
+
+    neighboursQueriesExecuted = 0;
 }
 
 /* Create the timeline */
 function createTimeline() {
 
     timeline = new vis.Timeline($('#timeline')[0]);
-    timelineGroups = new vis.DataSet();
-    timelineItems = new vis.DataSet();
     timeline.setOptions({
         stack: false,
         showCurrentTime: false
     });
-    timeline.setGroups(timelineGroups);
-    timeline.setItems(timelineItems);
+    timeline.setGroups(new vis.DataSet());
+    timeline.setItems(new vis.DataSet());
 
     timeline.on('select', function(e) {
         if (e.items[0])
-            onItemSelected(timelineItems.get(e.items[0]));
+            onItemSelected(timeline.itemsData.get(e.items[0]));
     });
 }
 
 /* Send the queries */
 function sendQueries() {
+
+    clearInterface();
+    createTimeline();
+
+    endpoint = $('#endpoint').val();
+    delegationNumber = $('#delegation_number').val();
+    queries = JSON.parse($('#queries').val());
 
     updateNeighboursCount();
 
@@ -155,11 +151,12 @@ function onFogletConnected() {
 function onReceiveRequest(id, message) {
     updateNeighboursCount();
     console.log('You are executing a query from a neighbour!');
+    neighboursQueriesExecuted++;
+    $('#neighbours_queries_executed').html(neighboursQueriesExecuted);
 }
 
 /* Executed when a Sparql answer is received */
 function onReceiveAnswer(message) {
-    console.log(message);
 
     executedQueries++;
     let start = vis.moment(message.startExecutionTime, "h:mm:ss:SSS");
@@ -168,22 +165,23 @@ function onReceiveAnswer(message) {
 
     // If last query
     if (executedQueries == queries.length) {
+        $('#send_queries').removeClass("disabled");
         globalExecutionTime = vis.moment.duration(vis.moment(new Date()).diff(globalStartTime));
         improvementRatio = Math.floor((cumulatedExecutionTime.asMilliseconds() / globalExecutionTime.asMilliseconds())*1000)/1000;
         showTimelogs();
     }
 
     // If new peer
-    if (!timelineGroups.get(message.id)) {
+    if (!timeline.groupsData.getDataSet().get(message.id)) {
         // Add a new group
-        timelineGroups.add({
+        timeline.groupsData.getDataSet().add({
             id: message.id,
             title: message.id
         });
     }
 
     // Add a new item
-    timelineItems.add({
+    timeline.itemsData.add({
         id: message.qId,
         group: message.id,
         title: message.payload.length+" results",
@@ -224,10 +222,21 @@ function showTimelogs() {
     $('#improvement_ratio').html(improvementRatio);
 }
 
+function clearInterface() {
+    $('#global_execution_time').html("--");
+    $('#cumulated_execution_time').html("--");
+    $('#improvement_ratio').html("--");
+    $('#timeline').html(" ");
+    $('#item').hide();
+    $('#send_queries').addClass("disabled");
+}
+
 function onItemSelected(item) {
     $('#item').show();
     $('#item .qId').html(item.message.qId);
     $('#item .id').html(item.message.id);
     $('#item .query').html(item.message.query);
+    $('#item .started_at').html(item.message.startExecutionTime);
+    $('#item .ended_at').html(item.message.endExecutionTime);
     $('#item .payload').html(JSON.stringify(item.message.payload, null, 4));
 }

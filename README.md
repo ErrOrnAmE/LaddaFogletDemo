@@ -3,12 +3,12 @@
 ## Installation
 
 ```bash
-npm install spray-wrtc foglet-ndp vis bootstrap@4.0.0-alpha.6 jquery
+npm install
 
 ```
 
 ## Run server
 
 ```bash
-node http-server.js
+npm run server
 ```

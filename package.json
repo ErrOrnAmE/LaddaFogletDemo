@@ -1,0 +1,38 @@
+{
+  "name": "ladda-foglet-demo",
+  "version": "0.1.0",
+  "description": "",
+  "main": " ",
+  "dependencies": {
+    "bootstrap": "^4.0.0-alpha.6",
+    "cors": "^2.8.1",
+    "foglet-ndp": "^0.3.1",
+    "jquery": "^3.1.1",
+    "spray-wrtc": "^0.1.2",
+    "vis": "^4.18.1",
+    "express": "^4.15.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/errorname/LaddaFogletDemo.git"
+  },
+  "keywords": [
+    "Ladda",
+    "Foglet",
+    "TPF",
+    "LDF"
+  ],
+  "author": "Thibaud Courtoison",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/errorname/LaddaFogletDemo/issues"
+  },
+  "homepage": "https://github.com/errorname/LaddaFogletDemo#readme",
+  "scripts": {
+    "server": "node http-server.js"
+  }
+}

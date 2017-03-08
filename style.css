@@ -1,22 +1,13 @@
 body {
-  z-index:500;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  height:100%;
+    margin: 0;
+    padding: 0;
 }
 
-.resultTab {
-	border-collapse: collapse;
-	border: 1px solid black;
-	text-align: left;
+a.btn {
+    color: white !important;
+    cursor: pointer;
 }
 
-#leftSection{
-  min-height:95vh;
-}
-
-#leftContent {
-  height:70vh;
-  min-height:70vh;
-  max-height:70vh;
-  overflow-y: scroll;
+.vis-item {
+    cursor: pointer;
 }

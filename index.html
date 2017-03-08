@@ -1,144 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
-  <link rel="stylesheet" type="text/css" href="/style.css">
-  <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"> </script>
-  <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"> </script>
-  <!-- FOGLET BUNDLES -->
-  <script type="text/javascript" src="/node_modules/spray-wrtc/build/spray-wrtc.bundle.js"> </script>
-  <script type="text/javascript" src="/node_modules/foglet-ndp/build/foglet-ndp.bundle.js"> </script>
-  <script type="text/javascript" src="/node_modules/vis/dist/vis.js"></script>
-  <link rel="stylesheet" type="text/css" href="/node_modules/vis/dist/vis.css"></script>
-  <style>
-    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-    .row.content {height: 1500px}
+    <head>
+        <title>Ladda Foglet Demo</title>
 
-    /* Set gray background color and 100% height */
-    .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
-    }
+        <meta charset="utf-8">
 
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: #555;
-      color: white;
-      padding: 15px;
-    }
+        <!-- jQuery -->
+        <script type="text/javascript" src="/node_modules/jquery/dist/jquery.min.js"></script>
 
-    /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-      .row.content {height: auto;}
-    }
-  </style>
-</head>
-<body>
-    <div class="panel panel-title">
-        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center">
-          <h1>SPARQL Query Delegation</h1>
-        </div>
-    </div>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <script type="text/javascript" src="/node_modules/tether/dist/js/tether.min.js"></script>
+        <script type="text/javascript" src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <div class="container-fluid">
-        <div class="row content">
-            <div class="col-sm-4 sidenav">
-                <h4>SPARQL Queries</h4>
+        <!-- Spray-wrtc -->
+        <script type="text/javascript" src="/node_modules/spray-wrtc/build/spray-wrtc.bundle.js"></script>
 
+        <!-- Foglet-ndp -->
+        <script type="text/javascript" src="/node_modules/foglet-ndp/build/foglet-ndp.bundle.js"> </script>
 
-                <div class="panel panel-info col-md-12 col-sm-12 col-xs-12" style="padding-right: 0px;padding-left: 0px;">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"></h3>
-                        <p> This is a list of different kind of queries you can do: <a href="https://query.wikidata.org/bigdata/ldf" style="color:black">Wikidata endpoint</a> </p>
-                    </div>
-                    <div class="panel-body">
+        <!-- Vis.js -->
+        <link rel="stylesheet" href="/node_modules/vis/dist/vis.css">
+        <script type="text/javascript" src="/node_modules/vis/dist/vis.js"></script>
 
-                        <form>
-                            <div class="form-group">
-                                <label for="endpoint">Endpoint </label>
-                                <input type="text" class="form-control" id="endpoint" placeholder="https://query.wikidata.org/bigdata/ldf" value='https://query.wikidata.org/bigdata/ldf'>
-                            </div>
-                            <div class="form-group">
-                                <label for="delegateNumber">Number of neighbours to delegate </label>
-                                <input type="text" class="form-control" id="delegateNumber" placeholder="2" value='2'>
-                            </div>
-                        </form>
-                        <div class="form-group">
-                            <label for="queries"> Queries </label>
-                            <textarea class="form-control" rows="5" id="queries">
-                [
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } LIMIT 5",
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 5 LIMIT 5",
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 10 LIMIT 5",
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 15 LIMIT 5",
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 20 LIMIT 5",
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 25 LIMIT 5",
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 30 LIMIT 5",
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 35 LIMIT 5",
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 40 LIMIT 5",
-                   " PREFIX wd: <http://www.wikidata.org/entity/> SELECT * WHERE { ?s ?p wd:Q142. ?s ?p ?o . } OFFSET 45 LIMIT 5"
-                ]
-                            </textarea>
-
-                            <div class="label label-warning">Warning: Beware, results are shown as soon as they are received!</div>
+        <!-- Ladda Foglet Demo -->
+        <link rel="stylesheet" href="/style.css">
+        <script type="text/javascript" src="/main.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <nav class="navbar">
+                <h1 class="text-center">Ladda Foglet Demo</h1>
+            </nav>
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title">Timeline</h4>
+                    <div id="timeline"></div>
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-4">
+                            <p>
+                                <table>
+                                    <tr>
+                                        <th>Global execution time:</th>
+                                        <td class="text-right" style="padding-left: 20px;">
+                                            <span id="global_execution_time">--</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cumulated execution time:</th>
+                                        <td class="text-right">
+                                            <span id="cumulated_execution_time">--</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Improvement ratio:</th>
+                                        <td class="text-right">
+                                            <span id="improvement_ratio">--</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p>
                         </div>
-                        <div style='text-align:center'>
-                            <button onClick="send()" class="btn btn-info btn-lg">Send</button>
-                            <a class="btn btn-success btn-lg" style='display:none' onclick='writeData()' id='prepareMetadata'>Prepare logs</a>
+                        <div class="col-8">
+                            <div id="item" class="card" style="display:none">
+                                <div class="card-block">
+                                    <h4>Query</h4>
+                                    <table>
+                                        <tr>
+                                            <th>Query id:</th>
+                                            <td class="qId"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Client id:</th>
+                                            <td class="id"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Query:</th>
+                                            <td class="query"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Response:</th>
+                                            <td><pre class="payload"></pre></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div id="leftBottom"> #Neighbours : 0 </div>
-                <div> <br/>
-                  <button onclick='updateNeighbours()'class="btn btn-default form-control"> Refresh Neighbours </button> <br><br>
-                  <button onclick='refreshConnection()'class="btn btn-default form-control"> Refresh Connection </button>
-                </div>
-                <br>
-                <div class="panel-heading">Logs</div>
-                <div class="panel-body">
-                  <div id="leftContent">  </div>
-                  <hr/>
-                  <a class="btn btn-warning btn-lg" style='display:none' id='resultMetadata' onclick='hidePrepareDownload()'>Download logs</a>
+                <div class="card-block">
+                    <a id="send_queries" class="btn btn-success float-right disabled" onclick="sendQueries()">Send 10 queries</a>
                 </div>
             </div>
-
-            <div class="col-sm-8">
-                <div class="panel-heading">
-    			  <h3 class="panel-title">Results</h3>
-    			</div>
-    			<div class="panel-body">
-                    <div class="text-center">
-                        <p>
-                            <b>Global execution time:</b>
-                            <span id="resultTime">--</span>
-                        </p>
-                    </div>
-                    <div id="visualization"></div>
-    				<div  class="text-center" id="resultPanel"></div>
-    			</div>
         </div>
-      </div>
-    </div>
-    <footer class="container-fluid">
-        <div class="text-center">
-            <p>
-                Using <a href="https://github.com/Chat-Wane/spray-wrtc" target="_blank">SPRAY-WRTC</a> as RPS. <br>
-                Using <a href="https://github.com/folkvir/foglet-core" target="_blank">FOGLET-CORE</a> as High level API.<br>
-                Using <a href="https://github.com/folkvir/foglet-ndp" target="_blank">FOGLET-NDP</a> as Delegation Protocol.
-            </p>
-        </div>
-    </footer>
-    <script type="text/javascript" src="/main.js"> </script>
-</body>
+    </body>
 </html>

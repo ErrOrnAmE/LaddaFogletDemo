@@ -233,10 +233,12 @@ function clearInterface() {
 
 function onItemSelected(item) {
     $('#item').show();
-    $('#item .qId').html(item.message.qId);
-    $('#item .id').html(item.message.id);
-    $('#item .query').html(item.message.query);
-    $('#item .started_at').html(item.message.startExecutionTime);
-    $('#item .ended_at').html(item.message.endExecutionTime);
-    $('#item .payload').html(JSON.stringify(item.message.payload, null, 4));
+    $('.qId').html(item.message.qId);
+    $('.id').html(item.message.id);
+    $('.query').html(item.message.query);
+    $('.started_at').html(item.message.startExecutionTime);
+    $('.ended_at').html(item.message.endExecutionTime);
+    $('.payload').html(JSON.stringify(item.message.payload, null, 4));
+    $("#mymodal").modal('toggle');
+
 }

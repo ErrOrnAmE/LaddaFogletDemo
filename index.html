@@ -144,7 +144,7 @@
                 <div class="col-4">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Start</h3>
+                            <h3>Settings</h3>
                         </div>
                         <div class="card-block">
                             <div class="form-group">
@@ -155,9 +155,12 @@
                                 <label for="delegation_number">Delegation number</label>
                                 <input type="number" class="form-control" id="delegation_number" value="2">
                             </div>
+                            <p>
+                                <b>Number of neighbours:</b> <span id="neighbours_count">--</span>
+                            </p>
                         </div>
                         <div class="card-block">
-                            <a id="send_queries" class="btn btn-success float-right disabled" onclick="sendQueries()">Send 10 queries</a>
+                            <a id="send_queries" class="btn btn-success float-right disabled" onclick="sendQueries()">Execute queries</a>
                         </div>
                     </div>
                 </div>

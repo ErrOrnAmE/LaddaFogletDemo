@@ -137,7 +137,7 @@ function sendQueries() {
 /* Update neighbours count */
 function updateNeighboursCount() {
     // TO DO: Understand why it never changes...
-    console.log(foglet.getNeighbours().length);
+    $('#neighbours_count').html(foglet.getNeighbours().length);
 }
 
 /* Executed when the foglet is connected */
